@@ -1,0 +1,15 @@
+diff --git a/node_modules/@react-native-mapbox-gl/maps/react-native.config.js b/node_modules/@react-native-mapbox-gl/maps/react-native.config.js
+new file mode 100644
+index 0000000..6b75f41
+--- /dev/null
++++ b/node_modules/@react-native-mapbox-gl/maps/react-native.config.js
+@@ -0,0 +1,9 @@
++module.exports = {
++  dependency: {
++    platforms: {
++      android: {
++        sourceDir: './android/rctmgl',
++      },
++    },
++  },
++};
