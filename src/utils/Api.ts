@@ -19,10 +19,9 @@ export const requests = {
       rankby: 'distance',
       key: 'AIzaSyBKucCGb2NaEbM1QqHjh5pm3HRW7tuSETQ',
     }),
-  autocomplete: ({ input }) =>
-    api.get('maps/api/place/autocomplete/json', {
-      input,
-      key: '',
+  getDetails: ({ id }) =>
+    api.get('/maps/api/place/details/json', {
+      key: 'AIzaSyBKucCGb2NaEbM1QqHjh5pm3HRW7tuSETQ',
+      place_id: id,
     }),
-  searchPlaces: () => api.get('/'),
 };

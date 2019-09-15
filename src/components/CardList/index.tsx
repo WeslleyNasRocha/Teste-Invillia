@@ -1,6 +1,6 @@
-import React, { useRef, SFC, useEffect, Fragment } from 'react';
-import { FlatList, Text, Button } from 'react-native';
-import { Card, styles, Title } from './styles';
+import React, { Fragment, SFC, useEffect, useRef } from 'react';
+import { FlatList } from 'react-native';
+import { Card, Description, styles, Title } from './styles';
 
 type Props = {
   onSelect: (id: string) => void;
@@ -14,7 +14,7 @@ const CardsList: SFC<Props> = props => {
     return (
       <Card onPress={() => props.onSelect(item.id)}>
         <Title numberOfLines={2}>{item.name}</Title>
-        <Text>{item.vicinity}</Text>
+        <Description>{item.vicinity}</Description>
       </Card>
     );
   };
@@ -22,7 +22,7 @@ const CardsList: SFC<Props> = props => {
   useEffect(() => {
     if (props.selectedPlace) {
       const index = props.places.indexOf(props.selectedPlace);
-      if (list.current instanceof FlatList) {
+      if (list.current instanceof FlatList && index >= 0) {
         list.current.scrollToIndex({
           animated: true,
           index,

@@ -14,9 +14,18 @@ export const Card = styled.TouchableOpacity`
 `;
 
 export const Title = styled.Text`
+  text-align: center;
   padding: 6px;
-  font-size: 18px;
+  font-size: 24px;
   color: #222;
+`;
+
+export const Description = styled.Text`
+  padding: 6px;
+  font-size: 16px;
+  text-align: center;
+  color: #555;
+  text-decoration: underline;
 `;
 
 export const styles = StyleSheet.create({

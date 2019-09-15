@@ -37,30 +37,33 @@ const Map: SFC<Props> = props => {
   useEffect(() => {
     Geolocation.getCurrentPosition(
       ({ coords: { longitude, latitude } }) => {
+        console.tron.log(longitude, latitude);
         setCoords([longitude, latitude]);
       },
-      null,
+      err => {
+        console.tron.log(err);
+      },
       { enableHighAccuracy: false, timeout: 15000 },
     );
   }, [locationPermission]);
 
-  // useEffect(() => {
-  //   const watchId = Geolocation.watchPosition(
-  //     ({ coords: { longitude, latitude } }) => {
-  //       setUserCoords([longitude, latitude]);
-  //     },
-  //     null,
-  //     { enableHighAccuracy: false, timeout: 15000 },
-  //   );
-  //   return () => {
-  //     Geolocation.clearWatch(watchId);
-  //   };
-  // }, [userCoords, locationPermission]);
+  useEffect(() => {
+    const watchId = Geolocation.watchPosition(
+      ({ coords: { longitude, latitude } }) => {
+        setUserCoords([longitude, latitude]);
+      },
+      null,
+      { enableHighAccuracy: false, timeout: 15000 },
+    );
+    return () => {
+      Geolocation.clearWatch(watchId);
+    };
+  }, [userCoords, locationPermission]);
 
   useEffect(() => {
     if (selectedPlace && selectedPlace.geometry.location) {
       const { lat, lng } = selectedPlace.geometry.location;
-      if (cameraRef.current) {
+      if (cameraRef.current instanceof MapboxGL.Camera) {
         cameraRef.current.flyTo([lng, lat]);
       }
     }
@@ -71,22 +74,28 @@ const Map: SFC<Props> = props => {
     props.fetch({ longitude, latitude });
   }, [coords]);
 
-  // useEffect(() => {
-  //   if (mapViewRef.current instanceof MapboxGL.MapView) {
-  //     mapViewRef.current.getVisibleBounds().then(boundaries => {
-  //       const [
-  //         [latitudeSW, latitudeNE],
-  //         [longitudeSW, longitudeNE],
-  //       ] = boundaries;
-  //       setBoundaries({
-  //         latitudeNE,
-  //         latitudeSW,
-  //         longitudeNE,
-  //         longitudeSW,
-  //       });
-  //     });
-  //   }
-  // }, [coords]);
+  useEffect(() => {
+    if (mapViewRef.current instanceof MapboxGL.MapView) {
+      mapViewRef.current.getVisibleBounds().then(boundaries => {
+        const [
+          [latitudeSW, latitudeNE],
+          [longitudeSW, longitudeNE],
+        ] = boundaries;
+        setBoundaries({
+          latitudeNE,
+          latitudeSW,
+          longitudeNE,
+          longitudeSW,
+        });
+      });
+    }
+  }, [coords]);
+
+  useEffect(() => {
+    if (props.placeList.follow) {
+      setSelectedPlace(props.placeList.places[0]);
+    }
+  }, [props.placeList.places]);
 
   if (locationPermission) {
     return (
@@ -123,15 +132,9 @@ const Map: SFC<Props> = props => {
 
         {showBottomContainer && (
           <Fragment>
-            <SearchBar
-              boundaries={boundaries}
-              onSelect={place => {
-                console.tron.log(place);
-                console.tron.log(props.placeList);
-              }}
-            />
+            <SearchBar boundaries={boundaries} />
             <BottomContainer
-              showButtons={isOffcenter}
+              showButtons={isOffcenter || coords[0] !== userCoords[0]}
               loading={props.placeList.loading}
               onFetch={async () => {
                 if (mapViewRef.current instanceof MapboxGL.MapView) {

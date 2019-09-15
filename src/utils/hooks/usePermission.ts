@@ -7,7 +7,7 @@ import {
 } from 'react-native';
 
 export default function usePermission(Permission: Permission): boolean | null {
-  const [status, setStatus] = useState(null);
+  const [status, setStatus] = useState(false);
 
   /**
    * Manage user permission to location

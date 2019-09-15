@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Creators } from '../../store/reducers/places';
 import { Container } from './styles';
-import NormalizeGeoResponse from '../../utils/NormalizeGeoResponse';
 
 type Props = ReturnType<typeof mapDispatchToProps> & {
   boundaries: {
@@ -14,10 +13,9 @@ type Props = ReturnType<typeof mapDispatchToProps> & {
     longitudeNE: number;
     longitudeSW: number;
   };
-  onSelect: (place: any) => void;
 };
 
-const SearchBar: SFC<Props> = ({ boundaries, setSelected, onSelect }) => {
+const SearchBar: SFC<Props> = ({ boundaries, setSelected }) => {
   const openModal = async () => {
     try {
       const place = await RNGooglePlaces.openAutocompleteModal({
@@ -25,8 +23,7 @@ const SearchBar: SFC<Props> = ({ boundaries, setSelected, onSelect }) => {
         useSessionToken: true,
         locationBias: boundaries,
       });
-      setSelected(NormalizeGeoResponse(place));
-      // onSelect(NormalizeGeoResponse(place));
+      setSelected(place);
     } catch (err) {
       console.tron.log(err);
     } finally {
