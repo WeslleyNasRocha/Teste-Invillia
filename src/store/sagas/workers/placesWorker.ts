@@ -1,16 +1,20 @@
+import { ApiResponse } from 'apisauce';
+import { GMSTypes } from 'react-native-google-places';
+import { AnyAction } from 'redux';
 import { call, put } from 'redux-saga/effects';
 import { requests } from '../../../utils/Api';
-import { ApiResponse } from 'apisauce';
 import { placesTypes } from '../../reducers';
-import { GMSTypes } from 'react-native-google-places';
 
-export function* fetchPlaces({ payload: { latitude, longitude } }) {
+export function* fetchPlaces({ payload: { latitude, longitude } }: AnyAction) {
   try {
     yield put({ type: placesTypes.LOADING });
-    const result: ApiResponse<any> = yield call(requests.getNearby, {
-      latitude,
-      longitude,
-    });
+    const result: ApiResponse<{ results: Array<any> }> = yield call(
+      requests.getNearby,
+      {
+        latitude,
+        longitude,
+      },
+    );
     if (!result.ok) {
       throw new Error('Erro ao buscar lugares próximos');
     }
@@ -20,17 +24,20 @@ export function* fetchPlaces({ payload: { latitude, longitude } }) {
   }
 }
 
-type setPlacesFromSearchT = {
-  payload: { place: GMSTypes.Place };
+type setPlacesFromSearchT = AnyAction & {
+  payload: { place: Partial<GMSTypes.Place> };
 };
 export function* setPlacesFromSearch({
   payload: { place },
 }: setPlacesFromSearchT) {
   try {
     yield put({ type: placesTypes.LOADING });
-    const result: ApiResponse<any> = yield call(requests.getDetails, {
-      id: place.placeID,
-    });
+    const result: ApiResponse<{ result: any }> = yield call(
+      requests.getDetails,
+      {
+        id: place.placeID,
+      },
+    );
     if (!result.ok) {
       throw new Error('Erro ao buscar detalhes do lugar');
     }
