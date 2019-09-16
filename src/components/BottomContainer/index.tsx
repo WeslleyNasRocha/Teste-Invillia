@@ -1,13 +1,11 @@
 import React, { SFC } from 'react';
-
-import { View, Image, Text, ActivityIndicator } from 'react-native';
+import { ActivityIndicator, Image, Text, View } from 'react-native';
 import {
-  Container,
   BottomContainerButtons,
-  FetchButtonContainer,
   CenterButtonContainer,
+  Container,
+  FetchButtonContainer,
 } from './styles';
-import CardsList from '../CardList';
 
 type Props = {
   showButtons: boolean;
