@@ -27,3 +27,8 @@ Foi utilizado a api do [google places](https://developers.google.com/places/web-
 
 - `yarn install` *(caso não tenha feito ainda)*
 - `yarn run test` ou `yarn run test:coverage` para ver a cobertura dos testes
+
+## Instalando
+
+- O arquivo `.apk` pode ser baixado nesse [link](https://drive.google.com/file/d/1V6iWcJZfeID13c6KLOp_iGmh_D7PRghQ/view?usp=sharing) 
+
