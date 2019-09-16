@@ -37,12 +37,9 @@ const Map: SFC<Props> = props => {
   useEffect(() => {
     Geolocation.getCurrentPosition(
       ({ coords: { longitude, latitude } }) => {
-        console.tron.log(longitude, latitude);
         setCoords([longitude, latitude]);
       },
-      err => {
-        console.tron.log(err);
-      },
+      err => {},
       { enableHighAccuracy: false, timeout: 15000 },
     );
   }, [locationPermission]);

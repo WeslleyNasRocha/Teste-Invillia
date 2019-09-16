@@ -25,7 +25,6 @@ const SearchBar: SFC<Props> = ({ boundaries, setSelected }) => {
       });
       setSelected(place);
     } catch (err) {
-      console.tron.log(err);
     } finally {
       Keyboard.dismiss();
     }
