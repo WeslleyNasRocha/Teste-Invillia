@@ -21,13 +21,12 @@ export default function Places(state = INITIAL_STATE, action) {
       return { ...state, loading: true };
     case Types.SUCCESS:
       return {
-        ...state,
         loading: false,
         places: action.payload,
         follow: !!action.follow,
       };
     case Types.FAILED:
-      return { ...state, loading: false, error: action.payload };
+      return { ...state, loading: false, error: action.payload, follow: false };
     default:
       return state;
   }
